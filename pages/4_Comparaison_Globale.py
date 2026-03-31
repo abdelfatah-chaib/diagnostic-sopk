@@ -185,7 +185,11 @@ all_rows = pipe1_rows + pipe2_rows + pipe3_rows
 df_res = pd.DataFrame(all_rows).set_index("Méthode (Modèle)")
 
 st.subheader("Tableau récapitulatif")
-styled_df = df_res.style.background_gradient(cmap="RdYlGn", vmin=0, vmax=1).format(na_rep="-", precision=4)
+try:
+    styled_df = df_res.style.background_gradient(cmap="RdYlGn", vmin=0, vmax=1).format(na_rep="-", precision=4)
+except ImportError:
+    # Streamlit Cloud images may omit matplotlib; keep the table readable without gradient.
+    styled_df = df_res.style.format(na_rep="-", precision=4)
 
 st.markdown(
     """
